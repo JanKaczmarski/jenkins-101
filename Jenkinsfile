@@ -1,9 +1,5 @@
 pipeline {
-  agent {
-    node {
-        label 'docker-agent-alpine'
-    }
-  }
+  agent any
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
