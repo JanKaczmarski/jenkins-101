@@ -12,7 +12,7 @@ pipeline {
             steps {
                 echo "Building.."
                 sh '''
-                echo "Building in process.."
+                docker build -t bigjack213/testImage ./myapp
                 '''
             }
         }
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 echo "Testing.."
                 sh '''
-                echo "$DOCKER_PASSWORD and $DOCKER_LOGIN"
+                echo "Doing testing stuff.."
                 '''
             }
         }
@@ -28,7 +28,8 @@ pipeline {
             steps {
                 echo 'Deliver..'
                 sh '''
-                echo "doing delivery stuff.."
+                echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
+                docker push bigjack213/testImage
                 '''
             }
         }
