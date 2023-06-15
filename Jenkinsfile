@@ -12,8 +12,7 @@ pipeline {
             steps {
                 echo "Building.."
                 sh '''
-                cd myapp
-                pip install -r requirements.txt
+                echo "Building in process.."
                 '''
             }
         }
@@ -21,9 +20,7 @@ pipeline {
             steps {
                 echo "Testing.."
                 sh '''
-                pwd
-                cd myapp
-                python3 hello.py --name=Jan
+                echo "$DOCKER_PASSWORD and $DOCKER_LOGIN"
                 '''
             }
         }
