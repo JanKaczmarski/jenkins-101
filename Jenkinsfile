@@ -4,7 +4,8 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
   environment {
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    DOCKER_PASSWORD = credentials('DOCKER_PASSWORD')
+    DOCKER_LOGIN = credentials('DOCKER_LOGIN')
   }
   stages {
     stage('Build') {
