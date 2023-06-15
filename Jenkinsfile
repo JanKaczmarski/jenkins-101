@@ -1,35 +1,31 @@
 pipeline {
-    agent{
-        docker 
+  agent any
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+  }
+  environment {
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+  }
+  stages {
+    stage('Build') {
+      steps {
+        sh 'docker build -t bigjack213/jenkins-docker-hub .'
+      }
     }
-    triggers {
-        pollSCM 'H/5 * * * *'
+    stage('Login') {
+      steps {
+        sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin'
+      }
     }
-    stages {
-        stage('Build') {
-            steps {
-                echo "Building.."
-                sh '''
-                docker build -t bigjack213/testImage ./myapp
-                '''
-            }
-        }
-        stage('Test') {
-            steps {
-                echo "Testing.."
-                sh '''
-                echo "Doing testing stuff.."
-                '''
-            }
-        }
-        stage('Deliver') {
-            steps {
-                echo 'Deliver..'
-                sh '''
-                echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
-                docker push bigjack213/testImage
-                '''
-            }
-        }
+    stage('Push') {
+      steps {
+        sh 'docker push bigjack213/jenkins-docker-hub'
+      }
     }
+  }
+  post {
+    always {
+      sh 'docker logout'
+    }
+  }
 }
