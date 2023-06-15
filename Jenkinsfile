@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t bigjack213/jenkins-docker-hub .'
+        sh 'docker build -t $DOCKER_LOGIN/jenkins-docker-hub ./myapp'
       }
     }
     stage('Login') {
