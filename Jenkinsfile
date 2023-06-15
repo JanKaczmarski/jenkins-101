@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo "Building.."
+                echo "Testing.."
                 sh '''
                 pwd
                 cd myapp
